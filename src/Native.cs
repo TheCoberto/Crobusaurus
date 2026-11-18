@@ -46,6 +46,18 @@ namespace Sailback
         [DllImport("gdi32.dll")] public static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
         [DllImport("gdi32.dll")] public static extern bool DeleteObject(IntPtr hObject);
 
+        [StructLayout(LayoutKind.Sequential)]
+        public struct BITMAPINFOHEADER
+        {
+            public int biSize, biWidth, biHeight;
+            public short biPlanes, biBitCount;
+            public int biCompression, biSizeImage, biXPelsPerMeter, biYPelsPerMeter, biClrUsed, biClrImportant;
+        }
+
+        [DllImport("gdi32.dll")]
+        public static extern IntPtr CreateDIBSection(IntPtr hdc, ref BITMAPINFOHEADER bmi, uint usage, out IntPtr bits, IntPtr section, uint offset);
+        [DllImport("gdi32.dll")] public static extern bool GdiFlush();
+
         [DllImport("user32.dll")]
         public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint flags);
 
@@ -77,6 +89,43 @@ namespace Sailback
             catch (DllNotFoundException) { }
             catch (EntryPointNotFoundException) { }
             return 96;
+        }
+
+        public const int GWL_EXSTYLE = -20;
+        public const int WS_EX_TRANSPARENT = 0x00000020;
+        public const int WS_EX_APPWINDOW = 0x00040000;
+
+        public delegate bool EnumWindowsProc(IntPtr hwnd, IntPtr lParam);
+        [DllImport("user32.dll")] public static extern bool EnumWindows(EnumWindowsProc proc, IntPtr lParam);
+        [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr hWnd);
+        [DllImport("user32.dll")] public static extern bool IsIconic(IntPtr hWnd);
+        [DllImport("user32.dll")] public static extern int GetWindowLong(IntPtr hWnd, int index);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern int GetWindowTextLength(IntPtr hWnd);
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)] public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int max);
+
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out RECT value, int size);
+        [DllImport("dwmapi.dll")]
+        private static extern int DwmGetWindowAttribute(IntPtr hwnd, int attr, out int value, int size);
+
+        /// <summary>True if DWM is hiding the window (other virtual desktop, suspended app...).</summary>
+        public static bool IsCloaked(IntPtr hwnd)
+        {
+            try { return DwmGetWindowAttribute(hwnd, 14 /* DWMWA_CLOAKED */, out int c, 4) == 0 && c != 0; }
+            catch (DllNotFoundException) { return false; }
+        }
+
+        /// <summary>The visible frame of a window, without the invisible resize borders Windows 10/11 add.</summary>
+        public static System.Drawing.Rectangle FrameBounds(IntPtr hwnd)
+        {
+            RECT r;
+            try
+            {
+                if (DwmGetWindowAttribute(hwnd, 9 /* DWMWA_EXTENDED_FRAME_BOUNDS */, out r, Marshal.SizeOf(typeof(RECT))) != 0)
+                    GetWindowRect(hwnd, out r);
+            }
+            catch (DllNotFoundException) { GetWindowRect(hwnd, out r); }
+            return System.Drawing.Rectangle.FromLTRB(r.Left, r.Top, r.Right, r.Bottom);
         }
 
         public static string ClassName(IntPtr hwnd)

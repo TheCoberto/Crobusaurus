@@ -1,8 +1,8 @@
 # Sailback
 
-A little sail-backed dinosaur that lives on your Windows taskbar. It wanders back and forth, sniffs around, roars, naps, and bolts when the mouse gets too close.
+Little dinosaurs that live on your Windows desktop. They wander along the taskbar, hop onto your windows, or roam the whole screen. Along the way they sniff around, roar, nap, and bolt when the mouse gets too close.
 
-![Sailback](docs/sailback.png)
+![The four species](docs/lineup.png)
 
 Sailback is a modern, from-scratch take on the 2001-era "desktop dinosaur" toys that came with kids' PC games. Those old toys still run on Windows 11, but they don't work well. They aren't DPI-aware, so they come out blurry or the wrong size. Their windows have hard, jagged edges. Nothing keeps them above the taskbar, and you can't close them from a tray icon. Sailback does the same job with current Windows APIs. All of its art and sound is original and generated in code.
 
@@ -12,40 +12,56 @@ Grab **[`release/Sailback.exe`](release/Sailback.exe)** and double-click it. It'
 
 > Windows SmartScreen may warn the first time, because the exe isn't code-signed. Choose **More info → Run anyway**.
 
-## Playing with it
+On first launch you get the **Choose your dinosaur** window:
+
+![Picker](docs/picker.png)
+
+To open it again later, double-click the tray icon, choose **Choose dinosaur...** from the right-click menu, or run `Sailback.exe --pick`.
+
+## The dinosaurs
+
+| | Species | Personality |
+|---|---|---|
+| 🦖 | **Sailback** | Tall sail and a long snout. Curious and easily startled. |
+| 🦖 | **Bigjaw** | Huge head, tiny arms, enormous roar. Slow and heavy. |
+| 🦖 | **Swiftclaw** | Small, feathered and very fast. Hard to catch. |
+| 🦕 | **Longneck** | A gentle four-legged giant. Ambles along and loves a nap. |
+
+Each species has its own size, gait speed and voice. There are six colour schemes (Fern, Slate, Dune, Ember, Midnight, Moss), plus a **Mixed** option that gives every dino in a herd different colours. Tick **Mix species too** for a herd of different dinosaurs.
+
+## Where they walk
+
+| Mode | What happens |
+|---|---|
+| **Along the taskbar** | The classic: back and forth along the top edge of the taskbar. |
+| **Taskbar and on top of windows** | Dinos jump up onto open windows and walk along their title bars. If you drag the window, they ride along with it. At the edges they turn back or tumble off. Maximized and covered window edges don't count. |
+| **Anywhere on the screen** | Free roam: they wander all over the desktop in every direction. |
+
+You can switch modes at any time from **Where to walk** in the right-click menu.
+
+## Playing with them
 
 | Do this | It does this |
 |---|---|
-| Click the dino | Roars |
+| Click a dino | Roars |
 | Double-click | Roars, then bolts |
 | Drag it | Picks it up (legs kicking) |
-| Fling it | It flies, bounces off screen edges and lands on its feet |
+| Fling it | It flies, bounces off screen edges and lands on its feet (or on a window) |
 | Move the mouse toward it | It often runs away |
 | Leave it alone | It wanders, sniffs, and eventually naps (zzz) |
-| Right-click the dino or the tray icon | Opens the options menu |
-| Run `Sailback.exe` again | Drops another dino from the sky (up to 8, each in its own colors) |
+| Right-click a dino | Change that dino's species or colours, plus all the options |
+| Right-click the tray icon | Options for the whole herd |
+| Run `Sailback.exe` again | Drops another dino from the sky (up to 8) |
 
-### Options (right-click menu)
-
-- **Roar! / Run! / Nap time**: trigger an action.
-- **Add another dino / Send this dino home**: change how many dinos there are.
-- **Size**: Small, Medium, Large or Huge, scaled for each monitor's DPI.
-- **Sounds**: the roar is synthesized at startup; no audio files are shipped.
-- **Run away from the mouse**
-- **Always on top**: stays above windows and the taskbar.
-- **Hide during full-screen apps**: gets out of the way of games and videos.
-- **Start with Windows**: per-user, no admin rights needed.
-- **Exit**
-
-Settings are saved in `HKCU\Software\Sailback`.
+Other options in the menu: Size (Small, Medium, Large or Huge, scaled per monitor DPI), Sounds, Run away from the mouse, Always on top, Hide during full-screen apps, and Start with Windows (per-user, no admin rights needed). Settings are saved in `HKCU\Software\Sailback`.
 
 ## How it works
 
-- Each dino is a borderless **per-pixel-alpha layered window** (`UpdateLayeredWindow`). Edges are anti-aliased, and transparent pixels are click-through, so it never gets in the way of the desktop.
-- The window is `WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE`. It has no taskbar button and never steals focus from what you're typing in.
-- The process is **Per-Monitor V2 DPI aware**. The dino is drawn as vectors (GDI+) and re-scaled when it walks onto a monitor with a different DPI.
-- It walks across all monitors and stands on the top edge of each one's taskbar (the working area), wherever the taskbar is.
-- Animation runs from a single ~60 fps timer. Leg poses use two-bone inverse kinematics, so the feet stay planted while walking.
+- Each dino is a borderless **per-pixel-alpha layered window** (`UpdateLayeredWindow`). GDI+ draws straight into a reusable DIB section. Edges are anti-aliased, transparent pixels are click-through, and the window (`WS_EX_TOOLWINDOW | WS_EX_NOACTIVATE`) never steals focus or adds a taskbar button.
+- The process is **Per-Monitor V2 DPI aware**. All art is vector-drawn, so it stays sharp at any scale and re-scales when a dino walks onto a monitor with a different DPI.
+- Leg poses use two-bone inverse kinematics, so the feet stay planted while walking.
+- In window-walking mode the app takes a snapshot of the visible top-level windows in z-order 10 times a second. It skips cloaked windows (other virtual desktops), minimized and maximized windows, and click-through overlays, and counts only the parts of each top edge that aren't covered. Window platforms are one-way: dinos can jump up through them and land on top. Jumps are ballistic arcs aimed at a reachable window.
+- Roars are synthesised in memory at a pitch that suits each species, so no audio files are shipped.
 
 ## Building
 
@@ -56,12 +72,15 @@ dotnet build src -c Release -o out/build
 copy out\build\Sailback.exe release\
 ```
 
-Dev helpers built into the exe:
+Developer helpers built into the exe:
 
 ```powershell
-Sailback.exe --export-icon src\Sailback.ico   # regenerate the app icon from the vector art
-Sailback.exe --export-png  docs\sailback.png  # hero image
-Sailback.exe --export-sheet docs\poses.png    # every animation pose on one sheet
+Sailback.exe --pick                              # open the chooser on launch
+Sailback.exe --export-icon   src\Sailback.ico    # regenerate the app icon from the vector art
+Sailback.exe --export-lineup docs\lineup.png     # all species side by side
+Sailback.exe --export-sheet  docs\poses.png      # every species in every pose
+Sailback.exe --export-picker docs\picker.png     # screenshot of the chooser
+Sailback.exe --dump-surfaces surfaces.txt        # which windows count as walkable right now
 ```
 
 ![Poses](docs/poses.png)
@@ -70,13 +89,16 @@ Sailback.exe --export-sheet docs\poses.png    # every animation pose on one shee
 
 ```
 src/
-  Program.cs       entry point, single-instance handling, dev export commands
-  SailbackApp.cs   tray icon, menu, animation clock, full-screen detection
-  Dino.cs          one dinosaur: layered window, behaviour state machine, mouse handling
-  DinoArt.cs       procedural vector art and colour palettes
-  RoarSynth.cs     synthesised roar (WAV generated in memory)
-  Settings.cs      registry-backed preferences, start-with-Windows
-  Native.cs        Win32 interop
+  Program.cs          entry point, single-instance handling, developer export commands
+  SailbackApp.cs      tray icon, menus, animation clock, full-screen detection
+  PickerForm.cs       the "choose your dinosaur" window
+  Dino.cs             one dinosaur: layered window, behaviour state machine, walking modes, mouse
+  Surfaces.cs         walkable window edges (window-walking mode)
+  Art.cs              palettes, pose model, Species base class, shared drawing helpers
+  Species/*.cs        Sailback, Bigjaw, Swiftclaw, Longneck
+  RoarSynth.cs        synthesised roars
+  Settings.cs         registry-backed preferences, start-with-Windows
+  Native.cs           Win32 interop
 release/
-  Sailback.exe     prebuilt binary
+  Sailback.exe        prebuilt binary
 ```
