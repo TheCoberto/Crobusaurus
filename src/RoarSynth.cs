@@ -5,7 +5,7 @@ using System.Media;
 using System.Linq;
 using System.Text;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>
     /// Synthesises dinosaur roars in memory (no audio files shipped). Each pitch is rendered on

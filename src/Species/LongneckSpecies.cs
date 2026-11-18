@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>A gentle four-legged giant with a very long neck.</summary>
     public sealed class LongneckSpecies : Species

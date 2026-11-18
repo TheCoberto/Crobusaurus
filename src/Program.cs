@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     internal static class Program
     {
@@ -30,7 +30,7 @@ namespace Sailback
             if (args.Length == 2 && args[0] == "--export-lineup") { ExportLineup(args[1]); return 0; }
             if (args.Length == 2 && args[0] == "--export-picker")
             {
-                using (var f = new PickerForm(new Settings { Herd = { ("sailback", "Fern") } }))
+                using (var f = new PickerForm(new Settings { Herd = { ("crobusaurus", "Fern") } }))
                 using (var bmp = new Bitmap(f.Width, f.Height))
                 {
                     f.StartPosition = FormStartPosition.Manual;
@@ -47,20 +47,20 @@ namespace Sailback
 
             bool forcePicker = args.Any(a => a.Equals("--pick", StringComparison.OrdinalIgnoreCase));
 
-            using (var mutex = new Mutex(true, @"Local\Sailback.SingleInstance", out bool first))
+            using (var mutex = new Mutex(true, @"Local\Crobusaurus.SingleInstance", out bool first))
             {
                 if (!first)
                 {
                     // Already running: ask the running copy to drop in another dino.
                     IntPtr running = Native.FindWindow(null, Dino.WindowTitle);
                     if (running != IntPtr.Zero)
-                        Native.PostMessage(running, Native.RegisterWindowMessage("Sailback.AddDino.v1"), IntPtr.Zero, IntPtr.Zero);
+                        Native.PostMessage(running, Native.RegisterWindowMessage("Crobusaurus.AddDino.v1"), IntPtr.Zero, IntPtr.Zero);
                     return 0;
                 }
 
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Application.Run(new SailbackApp(forcePicker));
+                Application.Run(new CrobusaurusApp(forcePicker));
             }
             return 0;
         }

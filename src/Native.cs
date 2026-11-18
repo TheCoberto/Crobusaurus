@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Sailback
+namespace Crobusaurus
 {
     internal static class Native
     {

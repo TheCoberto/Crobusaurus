@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>"Choose your dinosaur": species, colours, how many, size and where they walk.</summary>
     internal sealed class PickerForm : Form
@@ -39,7 +39,7 @@ namespace Sailback
             _s = Native.DpiAt(wa.Left + wa.Width / 2, wa.Top + wa.Height / 2) / 96f;
             int S(float v) => (int)Math.Round(v * _s);
 
-            Text = "Sailback - choose your dinosaur";
+            Text = "Crobusaurus - choose your dinosaur";
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = MinimizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
@@ -47,10 +47,10 @@ namespace Sailback
             Font = new Font("Segoe UI", 9f * 1); // GDI+ fonts scale with DPI on their own
             BackColor = Color.FromArgb(246, 244, 238);
             TopMost = true;
-            Icon = SailbackApp.MakeIcon(32);
+            Icon = CrobusaurusApp.MakeIcon(32);
 
             var first = settings.Herd.FirstOrDefault();
-            _species = Species.Find(first.Species ?? "sailback");
+            _species = Species.Find(first.Species ?? "crobusaurus");
             var paletteNames = settings.Herd.Select(h => h.Palette).Distinct().ToList();
             _palette = paletteNames.Count > 1 ? MixPalette : Array.FindIndex(Palette.All, p => p.Name == (first.Palette ?? "Fern"));
             if (_palette < MixPalette) _palette = 0;
@@ -93,7 +93,7 @@ namespace Sailback
             AddLabel("How many", rightX, y - S(26), bold: true, size: 10.5f);
             _count = new NumericUpDown
             {
-                Minimum = 1, Maximum = SailbackApp.MaxDinos, Value = Math.Max(1, Math.Min(SailbackApp.MaxDinos, settings.Herd.Count)),
+                Minimum = 1, Maximum = CrobusaurusApp.MaxDinos, Value = Math.Max(1, Math.Min(CrobusaurusApp.MaxDinos, settings.Herd.Count)),
                 Bounds = new Rectangle(rightX, y + S(6), S(70), S(26)),
             };
             Controls.Add(_count);

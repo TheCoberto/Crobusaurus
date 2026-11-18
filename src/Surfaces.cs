@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>Where the dinosaurs are allowed to walk.</summary>
     public enum WalkMode

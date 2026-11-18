@@ -2,7 +2,7 @@
 
   <!--
     Targets .NET Framework 4.8, which ships in-box with Windows 10 (1903+) and Windows 11,
-    so the resulting Sailback.exe is a single small file with nothing to install.
+    so the resulting Crobusaurus.exe is a single small file with nothing to install.
   -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -10,14 +10,14 @@
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
-    <AssemblyName>Sailback</AssemblyName>
-    <RootNamespace>Sailback</RootNamespace>
+    <AssemblyName>Crobusaurus</AssemblyName>
+    <RootNamespace>Crobusaurus</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <ApplicationIcon>Sailback.ico</ApplicationIcon>
+    <ApplicationIcon>Crobusaurus.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
     <Version>1.0.0</Version>
-    <Product>Sailback</Product>
+    <Product>Crobusaurus</Product>
     <Description>A little sail-backed dinosaur that roams your Windows taskbar.</Description>
     <Copyright>Copyright © 2026</Copyright>
     <DebugType>none</DebugType>

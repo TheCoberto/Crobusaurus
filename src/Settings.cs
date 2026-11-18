@@ -5,14 +5,14 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
-namespace Sailback
+namespace Crobusaurus
 {
-    /// <summary>User preferences, stored per-user in HKCU\Software\Sailback (no admin rights needed).</summary>
+    /// <summary>User preferences, stored per-user in HKCU\Software\Crobusaurus (no admin rights needed).</summary>
     internal sealed class Settings
     {
-        private const string KeyPath = @"Software\Sailback";
+        private const string KeyPath = @"Software\Crobusaurus";
         private const string RunKeyPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
-        private const string RunValue = "Sailback";
+        private const string RunValue = "Crobusaurus";
 
         public bool Sound = true;
         public bool RunFromMouse = true;
@@ -49,13 +49,13 @@ namespace Sailback
                                 .Select(e => e.Split(':'))
                                 .Where(a => a.Length == 2)
                                 .Select(a => (a[0], a[1]))
-                                .Take(SailbackApp.MaxDinos)
+                                .Take(CrobusaurusApp.MaxDinos)
                                 .ToList();
                     }
                 }
             }
             catch { /* fall back to defaults */ }
-            if (s.Herd.Count == 0) s.Herd.Add(("sailback", "Fern"));
+            if (s.Herd.Count == 0) s.Herd.Add(("crobusaurus", "Fern"));
             return s;
         }
 

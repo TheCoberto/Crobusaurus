@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>
     /// One dinosaur: a borderless, per-pixel-alpha layered window. Transparent pixels are
@@ -13,9 +13,9 @@ namespace Sailback
     {
         private enum State { Walk, Run, Idle, Sniff, Roar, Sleep, Flee, Dragged, Falling, Landing }
 
-        public const string WindowTitle = "Sailback dino";
+        public const string WindowTitle = "Crobusaurus dino";
 
-        private readonly SailbackApp _app;
+        private readonly CrobusaurusApp _app;
         private readonly Random _rng;
         private Species _species;
         private Palette _pal;
@@ -50,7 +50,7 @@ namespace Sailback
         private double _throwVx, _throwVy;
         private double _lastClickTime = -10;
 
-        public Dino(SailbackApp app, Species species, Palette palette, int seed)
+        public Dino(CrobusaurusApp app, Species species, Palette palette, int seed)
         {
             _app = app;
             _species = species;

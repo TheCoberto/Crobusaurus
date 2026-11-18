@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>A small, quick, feathered hunter with a sickle claw.</summary>
     public sealed class RaptorSpecies : Species

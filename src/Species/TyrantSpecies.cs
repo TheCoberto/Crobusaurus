@@ -2,7 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>A heavy, big-headed theropod with tiny arms and a deep voice.</summary>
     public sealed class TyrantSpecies : Species

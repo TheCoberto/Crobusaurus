@@ -5,17 +5,17 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>Owns the dinosaurs, the tray icon, the shared menu and the animation clock.</summary>
-    internal sealed class SailbackApp : ApplicationContext
+    internal sealed class CrobusaurusApp : ApplicationContext
     {
         public const int MaxDinos = 8;
 
         public readonly Settings Settings = Settings.Load();
         public readonly RoarSynth Roar = new RoarSynth();
         public readonly Surfaces Surfaces = new Surfaces();
-        public readonly int AddDinoMessage = Native.RegisterWindowMessage("Sailback.AddDino.v1");
+        public readonly int AddDinoMessage = Native.RegisterWindowMessage("Crobusaurus.AddDino.v1");
 
         private readonly List<Dino> _dinos = new List<Dino>();
         private readonly NotifyIcon _tray;
@@ -26,7 +26,7 @@ namespace Sailback
         private bool _fullscreen;
         private PickerForm _picker;
 
-        public SailbackApp(bool forcePicker)
+        public CrobusaurusApp(bool forcePicker)
         {
             if (!Settings.HasChosen || forcePicker)
             {
@@ -42,7 +42,7 @@ namespace Sailback
             _tray = new NotifyIcon
             {
                 Icon = MakeIcon(SystemInformation.SmallIconSize.Width),
-                Text = "Sailback - right-click for options",
+                Text = "Crobusaurus - right-click for options",
                 Visible = true,
                 ContextMenu = new ContextMenu(),
             };
@@ -123,7 +123,7 @@ namespace Sailback
             Settings.Save();
         }
 
-        /// <summary>Launching Sailback again while it's running adds another dino instead of a second copy.</summary>
+        /// <summary>Launching Crobusaurus again while it's running adds another dino instead of a second copy.</summary>
         public void OnAnotherInstanceLaunched(Dino receiver)
         {
             if (receiver == _dinos.FirstOrDefault()) AddRandomDino();
@@ -258,15 +258,15 @@ namespace Sailback
             startup.Checked = Settings.StartWithWindows;
 
             menu.MenuItems.Add("-");
-            menu.MenuItems.Add("About Sailback", (s, e) => MessageBox.Show(
-                "Sailback 2.0\n\nLittle dinosaurs that roam your desktop.\n\n" +
+            menu.MenuItems.Add("About Crobusaurus", (s, e) => MessageBox.Show(
+                "Crobusaurus 2.0\n\nLittle dinosaurs that roam your desktop.\n\n" +
                 "• Click one to make it roar (double-click and it bolts).\n" +
                 "• Drag it around and fling it - it lands on its feet.\n" +
                 "• Get the mouse close and it may run away.\n" +
                 "• Leave it alone long enough and it naps.\n" +
                 "• Right-click a dino to change its species or colours.\n\n" +
-                "Run Sailback.exe again to add another dino.",
-                "About Sailback", MessageBoxButtons.OK, MessageBoxIcon.Information));
+                "Run Crobusaurus.exe again to add another dino.",
+                "About Crobusaurus", MessageBoxButtons.OK, MessageBoxIcon.Information));
             menu.MenuItems.Add("Exit", (s, e) => ExitThread());
         }
 

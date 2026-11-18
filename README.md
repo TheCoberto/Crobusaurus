@@ -1,14 +1,14 @@
-# Sailback
+# Crobusaurus
 
 Little dinosaurs that live on your Windows desktop. They wander along the taskbar, hop onto your windows, or roam the whole screen. Along the way they sniff around, roar, nap, and bolt when the mouse gets too close.
 
 ![The four species](docs/lineup.png)
 
-Sailback is a modern, from-scratch take on the 2001-era "desktop dinosaur" toys that came with kids' PC games. Those old toys still run on Windows 11, but they don't work well. They aren't DPI-aware, so they come out blurry or the wrong size. Their windows have hard, jagged edges. Nothing keeps them above the taskbar, and you can't close them from a tray icon. Sailback does the same job with current Windows APIs. All of its art and sound is original and generated in code.
+Crobusaurus is a modern, from-scratch take on the 2001-era "desktop dinosaur" toys that came with kids' PC games. Those old toys still run on Windows 11, but they don't work well. They aren't DPI-aware, so they come out blurry or the wrong size. Their windows have hard, jagged edges. Nothing keeps them above the taskbar, and you can't close them from a tray icon. Crobusaurus does the same job with current Windows APIs. All of its art and sound is original and generated in code.
 
 ## Download / run
 
-Grab **[`release/Sailback.exe`](release/Sailback.exe)** and double-click it. It's a single small file with no installer. It runs on .NET Framework 4.8, which is built into Windows 10 (1903+) and Windows 11.
+Grab **[`release/Crobusaurus.exe`](release/Crobusaurus.exe)** and double-click it. It's a single small file with no installer. It runs on .NET Framework 4.8, which is built into Windows 10 (1903+) and Windows 11.
 
 > Windows SmartScreen may warn the first time, because the exe isn't code-signed. Choose **More info → Run anyway**.
 
@@ -16,13 +16,13 @@ On first launch you get the **Choose your dinosaur** window:
 
 ![Picker](docs/picker.png)
 
-To open it again later, double-click the tray icon, choose **Choose dinosaur...** from the right-click menu, or run `Sailback.exe --pick`.
+To open it again later, double-click the tray icon, choose **Choose dinosaur...** from the right-click menu, or run `Crobusaurus.exe --pick`.
 
 ## The dinosaurs
 
 | | Species | Personality |
 |---|---|---|
-| 🦖 | **Sailback** | Tall sail and a long snout. Curious and easily startled. |
+| 🦖 | **Crobusaurus** | The mascot. Tall sail and a long snout. Curious and easily startled. |
 | 🦖 | **Bigjaw** | Huge head, tiny arms, enormous roar. Slow and heavy. |
 | 🦖 | **Swiftclaw** | Small, feathered and very fast. Hard to catch. |
 | 🦕 | **Longneck** | A gentle four-legged giant. Ambles along and loves a nap. |
@@ -51,9 +51,13 @@ You can switch modes at any time from **Where to walk** in the right-click menu.
 | Leave it alone | It wanders, sniffs, and eventually naps (zzz) |
 | Right-click a dino | Change that dino's species or colours, plus all the options |
 | Right-click the tray icon | Options for the whole herd |
-| Run `Sailback.exe` again | Drops another dino from the sky (up to 8) |
+| Run `Crobusaurus.exe` again | Drops another dino from the sky (up to 8) |
 
-Other options in the menu: Size (Small, Medium, Large or Huge, scaled per monitor DPI), Sounds, Run away from the mouse, Always on top, Hide during full-screen apps, and Start with Windows (per-user, no admin rights needed). Settings are saved in `HKCU\Software\Sailback`.
+Other options in the menu: Size (Small, Medium, Large or Huge, scaled per monitor DPI), Sounds, Run away from the mouse, Always on top, Hide during full-screen apps, and Start with Windows (per-user, no admin rights needed). Settings are saved in `HKCU\Software\Crobusaurus`.
+
+## Name history
+
+The project started out as **Sailback**, named after the sail of spines along the mascot's back ("sailback" is also an informal word for sail-backed animals like Spinosaurus and Dimetrodon). Both the app and the sail-backed species were renamed **Crobusaurus** in November 2026. *Sailback* is worth keeping in mind as an alternative name, for example for a second sail-backed species or a future spin-off.
 
 ## How it works
 
@@ -69,18 +73,18 @@ Needs the .NET SDK (any recent version; it targets `net48` via reference-assembl
 
 ```powershell
 dotnet build src -c Release -o out/build
-copy out\build\Sailback.exe release\
+copy out\build\Crobusaurus.exe release\
 ```
 
 Developer helpers built into the exe:
 
 ```powershell
-Sailback.exe --pick                              # open the chooser on launch
-Sailback.exe --export-icon   src\Sailback.ico    # regenerate the app icon from the vector art
-Sailback.exe --export-lineup docs\lineup.png     # all species side by side
-Sailback.exe --export-sheet  docs\poses.png      # every species in every pose
-Sailback.exe --export-picker docs\picker.png     # screenshot of the chooser
-Sailback.exe --dump-surfaces surfaces.txt        # which windows count as walkable right now
+Crobusaurus.exe --pick                              # open the chooser on launch
+Crobusaurus.exe --export-icon   src\Crobusaurus.ico    # regenerate the app icon from the vector art
+Crobusaurus.exe --export-lineup docs\lineup.png     # all species side by side
+Crobusaurus.exe --export-sheet  docs\poses.png      # every species in every pose
+Crobusaurus.exe --export-picker docs\picker.png     # screenshot of the chooser
+Crobusaurus.exe --dump-surfaces surfaces.txt        # which windows count as walkable right now
 ```
 
 ![Poses](docs/poses.png)
@@ -90,15 +94,15 @@ Sailback.exe --dump-surfaces surfaces.txt        # which windows count as walkab
 ```
 src/
   Program.cs          entry point, single-instance handling, developer export commands
-  SailbackApp.cs      tray icon, menus, animation clock, full-screen detection
+  CrobusaurusApp.cs      tray icon, menus, animation clock, full-screen detection
   PickerForm.cs       the "choose your dinosaur" window
   Dino.cs             one dinosaur: layered window, behaviour state machine, walking modes, mouse
   Surfaces.cs         walkable window edges (window-walking mode)
   Art.cs              palettes, pose model, Species base class, shared drawing helpers
-  Species/*.cs        Sailback, Bigjaw, Swiftclaw, Longneck
+  Species/*.cs        Crobusaurus, Bigjaw, Swiftclaw, Longneck
   RoarSynth.cs        synthesised roars
   Settings.cs         registry-backed preferences, start-with-Windows
   Native.cs           Win32 interop
 release/
-  Sailback.exe        prebuilt binary
+  Crobusaurus.exe        prebuilt binary
 ```

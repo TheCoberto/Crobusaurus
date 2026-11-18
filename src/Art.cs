@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Sailback
+namespace Crobusaurus
 {
     /// <summary>A colour scheme. "Accent" is the sail / feathers / back markings, depending on species.</summary>
     public sealed class Palette
@@ -52,7 +52,7 @@ namespace Sailback
     /// </summary>
     public abstract class Species
     {
-        public static readonly Species[] All = { new SailbackSpecies(), new TyrantSpecies(), new RaptorSpecies(), new LongneckSpecies() };
+        public static readonly Species[] All = { new CrobusaurusSpecies(), new TyrantSpecies(), new RaptorSpecies(), new LongneckSpecies() };
         public static Species Find(string id) => All.FirstOrDefault(s => s.Id == id) ?? All[0];
 
         public abstract string Id { get; }

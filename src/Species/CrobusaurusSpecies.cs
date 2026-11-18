@@ -2,13 +2,13 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace Sailback
+namespace Crobusaurus
 {
-    /// <summary>The original Sailback: a long-snouted, sail-backed fisher.</summary>
-    public sealed class SailbackSpecies : Species
+    /// <summary>Crobusaurus, the mascot: a long-snouted, sail-backed fisher. (Originally called "Sailback".)</summary>
+    public sealed class CrobusaurusSpecies : Species
     {
-        public override string Id => "sailback";
-        public override string Name => "Sailback";
+        public override string Id => "crobusaurus";
+        public override string Name => "Crobusaurus";
         public override string Blurb => "Tall sail, long snout. Curious and easily startled.";
         public override float W => 200;
         public override float H => 140;
